@@ -1,1 +1,13 @@
 theme: jekyll-theme-cayman
+title: My Blog
+description: Some random topics
+
+social-network-links:
+  rss: true
+  email: "pat@pat.net"
+  github: patniemeyer
+  reddit: patniemeyer
+  linkedin: patniemeyer
+  stackoverflow: patniemeyer@gmail.com
+  youtube: patniemeyer
+
