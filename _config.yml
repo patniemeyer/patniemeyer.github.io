@@ -1,6 +1,8 @@
 theme: jekyll-theme-cayman
-title: My Blog
-description: Some random topics
+title: Pat Niemeyer
+description: Thoughts on various things.
+github:
+  is_project_page: false
 
 social-network-links:
   rss: true
@@ -8,6 +10,6 @@ social-network-links:
   github: patniemeyer
   reddit: patniemeyer
   linkedin: patniemeyer
-  stackoverflow: patniemeyer@gmail.com
+  stackoverflow: 74975/pat-niemeyer
   youtube: patniemeyer
 
