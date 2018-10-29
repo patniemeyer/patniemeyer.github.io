@@ -1,6 +1,7 @@
 theme: jekyll-theme-cayman
 title: Pat Niemeyer
 description: Thoughts on various things.
+markdown: kramdown
 github:
   is_project_page: false
 
@@ -13,3 +14,6 @@ social-network-links:
   stackoverflow: 74975/pat-niemeyer
   youtube: patniemeyer
 
+kramdown:
+  # parse markdown inside block-level HTML tag
+  parse_block_html: true
