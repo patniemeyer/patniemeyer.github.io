@@ -1,6 +1,9 @@
 ---
 title:  "Generating Memoji From Photos"
+draft: true
 ---
+
+<p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p>
 
 # Generating Memoji from Photos
 
@@ -28,7 +31,7 @@ Although I think the results are compelling, let me temper expectations a bit by
 
 ### Caricatures
 
-First, there is the subjectivity of what "looks like" someone in a cartoonish form.  Usually these caricatures exaggerate a person's most distinctive features.  Some of these features, such as hair style, are not really intrinsic to the person but vary wildly from photo to photo and day to day.  For this reason it's likely that a good neural network trained to recognize individuals would capture information about hair style in an abstract way that allows for this variation and may not be ideal for generating hairstyles.
+First, there is the question of what "looks like" someone in a cartoonish form.  Caricatures exaggerate a person's most distinctive features.  Some features such as hair style are not really intrinsic to the person but vary wildly from photo to photo and day to day.  For this reason it's likely that a good neural network trained to recognize individuals would capture information about hair style in an abstract way that allows for this variation and may not be ideal for generating hairstyles.
 
 ### Skin Tone
 Accurately inferring skin tone from photos taken in random lighting conditions is a hard.  My simple test setup did a poor job at this.  It generally produced lighter skin choices and didn't always differentiate well between realistic and unrealistic options (not shown)
@@ -42,7 +45,6 @@ This article on normalizing facial features and skin tone looks pretty cool: <a 
 ### Lack of an API
 We are seriously limited by the fact that there is currently no API for creating Apple Memoji, nor any other straightforward way to automate their creation in iOS.  This drastically limits how effectively we can search the space of possible Memoji as part of any generation process.  Ideally we'd want to use a genetic algorithm to to exhaustively refine combinations of features rather than rely on their separability, but this was not possible with the simple route I chose here.
 
-Finally, I'll just say here that I am not really an expert in this field and I welcome all feedback, corrections, and suggestions.  
 
 ### Photo Selection
 
@@ -163,6 +165,9 @@ This is obviously not ideal for several reasons:  First, it's a pain. (There are
 
 Did I mention that there are 93 hair choices? :)
 
+Also my initial attempt at doing this was frustrated by the fact that small head and eye movements would affect the scoring. Only after a lot of wasted time did I realize that I could just cover the camera and the Memomji would rever to a fixed position, yet still allow me to make the changes to its appearance :)
+
+
 Let's go with this and see what happens.
 
 ## Results
@@ -207,7 +212,7 @@ President Obama's chin looks overly square to my eye, but after staring at it fo
 
 Finally, I should also note that I did not bother with facial hair selection for either President since they have none.  (I probably should have.)
 
-### The source
+## The Source
 
 You can get the Torch scripts that I used in this article at the github project: <a href="">memoji-face</a>. 
 I probably won't include the images with the scripts just to avoid complaints, but if anyone wants to reproduce my results with the same data please contact me directly and I will send them to you.
@@ -215,6 +220,7 @@ I probably won't include the images with the scripts just to avoid complaints, b
 The full VGG Face network can be downloaded from the
 <a href="http://www.robots.ox.ac.uk/~vgg/software/vgg_face/">Visual Geometry Group VGG Face</a> web site.
 
+All feedback, corrections, and suggestions are welcome.
 
 ## Me?
 
@@ -223,3 +229,7 @@ Pat Niemeyer is a co-founder and software engineer at Present Company.  He is th
 <p align="center">
   <img height="320" src="/assets/memoji-gen/pat-gen.png">
 </p>
+
+For my Memoji above I made a few tweaks as well: The network chose black hair for me instead of brown with some gray, gray eyes for some reason, and a slightly different set of facial hair (though very close).
+
+{% include nav.html %}
