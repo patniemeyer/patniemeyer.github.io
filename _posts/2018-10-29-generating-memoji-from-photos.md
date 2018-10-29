@@ -155,6 +155,10 @@ This is where it gets sticky.  There's no API for creating Memoji with code and 
 
 For the test rig I tethered my phone to my desktop with Quicktime Player's Movie Recording feature and positioned it in a corner where the script could grab screenshots for processing.  For each feature I ran through the possibilities, selecting each option and hitting enter on the keyboard to grab and rank the output.
 
+<p align="center">
+  <img height="300" src="/assets/memoji-gen/desktop1.png">
+</p>
+
 This is obviously not ideal for several reasons:  First, it's a pain. (There are 93 hair choices by the way; Try running through those dozens of times.)  More importantly, it only allows us to evaluate one feature difference at a time.  In theory we could iterate on this and run through the tree of choices repeatedly until there were no changes suggested by the network,  but even that isn't perfect since it might only be a "local minimum" based on how we started.  
 
 Did I mention that there are 93 hair choices? :)
