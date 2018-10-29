@@ -174,6 +174,14 @@ Let's go with this and see what happens.
 
 I spoiled most of the results with the images at the beginning of this article, but they could use a little elaboration.
 
+<p align="center">
+<img height="160" src="/assets/memoji-gen/trump-gen.png">
+</p>
+
+<p align="center">
+<img height="168" src="/assets/memoji-gen/obama-gen.png">
+</p>
+
 First, let me say that I only made one subjective pick (tweak) in two Presidential examples and that was to override President Trump's hair.  So with that exception, to the extent that you think the generated examples do or do not look like their counterparts that is all due to the network's rankings.
 
 I've already mentioned that skin tone was not differentiated very well at all, although in the Memoji selection test it did seem to make some correspondence?
@@ -185,7 +193,7 @@ Some characteristics did what I expected.  For example, President Obama is known
   <br/><em>Obama's ear selection</em>
 </p>
 
-But the choice of eyes seems more random.  By this I mean that the top three choices did not seem paticularly similar to one another.
+But the choice of eyes seems more random.  By this I mean that the top three choices, while plausible, did not seem paticularly similar to one another.
 
 <p align="center">
   <img height="200" src="/assets/memoji-gen/obama-eyes.png">
