@@ -1,9 +1,8 @@
 ---
 title:  "Attempts at Generating Memoji From Photos"
-draft: true
 ---
 
-<p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p>
+<!--p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p-->
 
 # Attempts at Generating Memoji from Photos
 
@@ -186,13 +185,13 @@ I spoiled some of the results at the beginning of this post, but they could use 
 
 In a draft of this article I showed an image of President Trump in which I overrode the decision of the network about the choice of hair and picked one of the higher ranked ones myself (I did say "guided") but I thought better of that and in all of the images shown here are the choices of the script.  
 
-With that said, some feature choices seemed much more volatile than others: By this I mean that in some cases the top three choices made by the network were very similar but sometimes they were not.  For example, these are the top four choices for President Trump's hair:
+With that said, some feature choices seemed much more volatile than others: By this I mean that in some cases the top three choices made by the network were very similar but sometimes they were not.  For example, these are the top three choices for President Trump's hair:
 
 <p align="center">
 <img height="168" src="/assets/memoji-gen/trump-hair-choices.png">
 </p>
 
-Some characteristics did what I expected.  For example, President Obama is known to have somewhat prominent ears and the network did rank the choices from largest to smallest.
+Some characteristics did what I expected.  For example, President Obama is said to have prominent ears and the network did rank the choices from largest to smallest.
 
 <p align="center">
   <img height="200" src="/assets/memoji-gen/obama-ears.png">
@@ -206,7 +205,7 @@ But the choice of eyes varied quite a bit:
   <br/><em>Obama's eye selection</em>
 </p>
 
-President Trump's eye selection was more consistent:
+President Trump's eye selection, on the other hand, was more consistent:
 
 <p align="center">
   <img height="200" src="/assets/memoji-gen/trump-eyes.png">
@@ -226,12 +225,11 @@ Hair color selection was also problematic.  Hair color for President Trump and P
   <br/><em>Carrot Top hair color selection</em>
 </p>
 
-Reddish hair was in the top three of ten, but this was not a satisfying result.  I tried many things to see if I could find factors that would affect this:  I changed the way I pre-processed the image (thinking that perhaps I had the layers reversed or the normalization wrong).  But I found that the choice of gray here was very stable even when I changed the input image drastically.  
+Reddish hair was in the top three (of ten), but this was not a satisfying result.  I tried many things to see if I could find factors that would affect this:  I changed the way I pre-processed the image (thinking that perhaps I had the layers reversed or the normalization wrong).  But I found that the choice of gray here was very stable even when I changed the input image drastically.  
 
-In a more promising test I looked at the choices that *other layers* would make. Recall that we chose layer 38 since it was the highest layer before the part of the network that would try to guess at individual people from the training set. However I spent a lot of time earlier comparing the choices of some of the lower layers, just to see how they would differ.  In particular using our layer 32 instead of 38 often seemed to make a different and interesting choice where color was concerned.  This layer corresponds to the last "pooling" layer in VGG16 right before the first "fully connected" layer and so perhaps it retains more spatial and color information.  This layer and some lower layers did a better job at picking bright red for the color of Carrot Top's hair.  However they made subjectively worse choices for the rest of the images.
+In another test I looked at the choices that *other layers* would make. Recall that we chose layer 38 since it is the highest layer that characterizes the face prior to the layer that makes a prediction about an individual person.  However we can compare the choices lower layers, just to see how they would differ.  In particular using our layer 32 instead of 38 often seemed to make a different and interesting choice where color was concerned.  This layer corresponds to the last "pooling" layer in VGG16 right before the first "fully connected" layer and so perhaps it retains more spatial and color information.  This layer and some lower layers did a better job at picking bright red for the color of Carrot Top's hair.  However they made subjectively worse choices for the rest of the images.
 
-I also tried averaging hair color choices in various ways (by top three choices and by alternate network layers).  
-The averaging actually sort of works for features too if you don't mind a little blurring.  These produced plausible results but ultimately nothing gave me bright red hair for Carrot Top :(
+I also tried averaging hair color choices in various ways (by top three choices and by alternate network layers).  The averaging actually sort of works for features too if you don't mind a little blurring.  These produced plausible results but ultimately nothing gave me bright red hair for Carrot Top :(
 
 If anyone has any ideas here please write me!
 
