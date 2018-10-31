@@ -15,7 +15,7 @@ The issue I'm trying to address here is how to build iOS applications that make 
 
 ## CachedSingle
 
-The first utility is essentially just a read-through cache backed by a Single data source. New subscriptions prompt an expiration check and new subscribers can be configured to either block waiting for updated data or receive the most recent replay value followed by the update later.
+The first utility is essentially just a read-through cache backed by a `Single` data source. New subscriptions prompt an expiration check and new subscribers can be configured to either block waiting for updated data or receive the most recent replay value followed by the update later.
 
 ```swift
     CachedSingle<Int>(expiration: 3.0) {
@@ -24,6 +24,8 @@ The first utility is essentially just a read-through cache backed by a Single da
         }
 }
 ```
+
+Repeated calls are coalesced but data is never allowed to get too stale and still only fetched on demand.
 
 ### Blocking and Non-blocking
 
@@ -37,15 +39,15 @@ Consider a network API for fetching and updating the status of a user: I’m goi
 
 In fact, there may be multiple race conditions: Some servers offer only "eventual consistency" and so even if we make a call to refresh our data *after* we post our change we could get a stale results for a period of time.  In fact, the more "responsive" we are in updating the UI the more likely we would be to find ourself in that situation.  Either way, there is a chance that an unrelated update could arrive and blow away our data.
 
-A general solution to this problem would be to essentially wrap a transaction around the server call by sending unique ids with every request, pairing up the responses and "committing" the values.  But individual network calls may fail and have to be retried or conceivably even return out of order and we'd still have to build our local transform on top of all of that.  
+A general solution to this problem would require wrapping a transaction around every server call, sending unique ids with the request, pairing up the responses and "committing" the values.  But this would be complicated by individual network calls that may fail and have to be retried or conceivably even return out of order and we'd still have to build our local transform on top of all of this.  
 
 ## TransformableCachedSingle
 
-The approach I've taken (for now) is to create a way to apply a simple transformation to the local model and hold it for a period of time.  With this extension I can apply a transform to the user status with the desired intermediate result and then expire the the transformation when the call is complete.
+The approach I've taken (for now) is to create a way to apply a simple transformation to the local model and hold it for a period of time.  With this extension I can apply a transform to the user status with the desired intermediate result and then expire the the transformation after a short window of time surrounding the transaction.
 
 <p align="center"> <img height="300" src="/assets/rxcacheable/updates2.png"> </p>
 
-What this provides is a way to transform the cached data in the CachedSingle for a specified period of time, after which the transform is expired and no longer applied when new data arrives from the Single producer.  An optimistic change is applied to local data and held during the course of a transaction but then allowed to be overwritten when fresh data arrives later.
+After a specified period of time the transform is expired and no longer applied on the next `Single` production.  An optimistic change is applied to local data and held during the course of a transaction but then allowed to be overwritten when fresh data is demanded later.
 
 ```swift
   // TransformableCachedSingle extends CachedSingle
@@ -60,11 +62,11 @@ What this provides is a way to transform the cached data in the CachedSingle for
   transform.expire(at: date)
 ```
 
-The transform is applied to the underlying cached single data, so you can either modify or replace it.  For example mashing the "like" button on a UI may wish to add 1 to a value.  Alternately maybe you have a UI with an enum of states and one of those states indicates that the value is changing or indeterminate.
+The transform is applied on top of the underlying cached value, so you can either modify or replace it.  For example when mashing the "like" button on a UI may wish to add 1 to a value.  Alternately maybe you have a UI with an enum of states and one of those states indicates that the value is changing or indeterminate.
 
 <p align="center"> <img height="50" src="/assets/rxcacheable/like.png"> </p>
 
-Why does this matter at all?  You may be thinking that in the case of the "like" button above the user won't know the real count anyway, so why bother?  Well, let me tell you that a user does know the differece between a 0 and a 1 :)  If the user pushes back from a screen and returns quickly to find their action gone they will be confused.  Worse yet they may end up testing your UI's safeguards by hitting toggle buttons that are in the wrong state.
+Why does this matter at all?  You may be thinking that in the case of the "like" button above the user won't know the real count anyway, so why bother?  Well they would definitely notice the differece between a 0 and a 1 :)  Also if the user pushes back from a screen and returns quickly to find their action gone they will be confused.  Worse yet they may end up testing your UI's safeguards by hitting toggle buttons that are in the wrong state.
 
 ## Source
 
