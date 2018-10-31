@@ -11,11 +11,11 @@ Are you satisfied with your Memoji? :)  Did you feel a bit lost when trying to c
 In this post I'll talk about my very basic attempt at using a neural network to generate Apple Memoji characters from real world photos of people.  Specifically, I tested _VGG16 Face_, a network trained for face recognition to see how well it would perform when comparing real world photos with Memoji that "look like" various subjects.  I then used it to guide the selection of features and create Memoji for new subjects.
 
 <p align="center">
-<img height="320" src="/assets/memoji-gen/trump-gen4.png">
+<img height="300" src="/assets/memoji-gen/trump-gen4.png">
 </p>
 
 <p align="center">
-<img height="335" src="/assets/memoji-gen/obama-gen.png">
+<img height="350" src="/assets/memoji-gen/obama-gen.png">
 </p>
 
 
@@ -178,9 +178,8 @@ I spoiled some of the results at the beginning of this post, but they could use 
 <p align="center">
 <img height="160" src="/assets/memoji-gen/trump-gen4.png">
 </p>
-
 <p align="center">
-<img height="168" src="/assets/memoji-gen/obama-gen.png">
+<img height="208" src="/assets/memoji-gen/obama-gen.png">
 </p>
 
 In a draft of this article I showed an image of President Trump in which I overrode the decision of the network about the choice of hair and picked one of the higher ranked ones myself (I did say "guided") but I thought better of that and in all of the images shown here are the choices of the script.  
@@ -221,7 +220,7 @@ I've already mentioned that skin tone was not differentiated very well at all. (
 Hair color selection was also problematic.  Hair color for President Trump and President Obama seemed fine but when I tried it on someone with bright read hair the network always wanted to pick gray:
 
 <p align="center">
-  <img height="200" src="/assets/memoji-gen/carrottop-haircolor.png">
+  <img height="350" src="/assets/memoji-gen/carrottop-haircolor.png">
   <br/><em>Carrot Top hair color selection</em>
 </p>
 
