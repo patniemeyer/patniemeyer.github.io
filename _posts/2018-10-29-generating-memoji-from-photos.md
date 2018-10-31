@@ -28,7 +28,7 @@ _Memoji generated from photos with guidance from a neural network._
 
 The images above show a couple of the results. While they leave a lot to be desired, I think there are some 
 interesting choices buried in there and I was excited to find that the simple approach taken here actually _worked
-at all_.  I half expected that the network would not "see" these Memoji as faces at all.  There are also a bunch of factors working against us here and let me state a few up front:
+at all_.  I half expected that the network would not "see" these Memoji as faces.  There are also a bunch of factors working against us here and let me state a few up front:
 
 ### Caricatures
 
