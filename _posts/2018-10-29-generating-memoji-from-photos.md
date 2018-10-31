@@ -1,10 +1,10 @@
 ---
-title:  "Attempts at Generating Memoji From Photos"
+title:  "Generating Memoji From Photos"
 ---
 
 <!--p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p-->
 
-# Attempts at Generating Memoji from Photos
+# Generating Memoji from Photos
 
 Are you satisfied with your Memoji? :)  Did you feel a bit lost when trying to choose the right chin or eyes?  Wouldn't it be cool if an algorithm could generate a Memoji from a photo?
 
@@ -244,7 +244,7 @@ All feedback, corrections, and suggestions are welcome.
 
 ## Me?
 
-Pat Niemeyer is a co-founder and software engineer at Present Company.  He is the author of the Learning Java book series by O'Reilly & Associates and contributes to various open source projects.
+Pat Niemeyer is a Co-founder and software engineer at <a href="https://present.co">Present Company</a>.  He is the author of the Learning Java book series by O'Reilly & Associates and contributor to various open source projects.
 
 <p align="center">
   <img height="320" src="/assets/memoji-gen/pat-gen.png">
