@@ -66,7 +66,7 @@ The transform is applied on top of the underlying cached value, so you can eithe
 
 <p align="center"> <img height="50" src="/assets/rxcacheable/like.png"> </p>
 
-Why does this matter at all?  You may be thinking that in the case of the "like" button above the user won't know the real count anyway, so why bother?  Well they would definitely notice the differece between a 0 and a 1 :)  Also if the user pushes back from a screen and returns quickly to find their action gone they will be confused.  Worse yet they may end up testing your UI's safeguards by hitting toggle buttons that are in the wrong state.
+You may be thinking that in the case of the "like" button above the user wouldn't know the real count anyway, so why bother?  Well they definitely might notice the difference between a 0 and a 1.  Also if the user pushes back from a screen and returns quickly to find their action gone they will be confused.  Worse yet they may end up testing your UI's safeguards by hitting toggle buttons that are in the wrong state.
 
 ## Source
 
