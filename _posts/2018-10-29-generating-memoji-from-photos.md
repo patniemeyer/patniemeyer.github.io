@@ -6,6 +6,8 @@ title:  "Generating Memoji From Photos"
 
 # Generating Memoji from Photos
 
+<p style="font-size: 75%; font-style: italic">Updated 10/31/2018: Added the link to the source.</p>
+
 Are you satisfied with your Memoji? :)  Did you feel a bit lost when trying to choose the right chin or eyes?  Wouldn't it be cool if an algorithm could generate a Memoji from a photo?
 
 In this post I'll talk about my very basic attempt at using a neural network to generate Apple Memoji characters from real world photos of people.  Specifically, I tested _VGG16 Face_, a network trained for face recognition to see how well it would perform when comparing real world photos with Memoji that "look like" various subjects.  I then used it to guide the selection of features and create Memoji for new subjects.
@@ -234,8 +236,8 @@ If anyone has any ideas here please write me!
 
 ## The Source
 
-You can get the Torch scripts that I used in this article at the github project: <a href="">memoji-face</a>. 
-I probably won't include the images with the scripts to avoid complaints, but if anyone wants to reproduce my results with the same data please contact me directly and I will send them to you.
+You can get the Torch scripts that I used in this article at the github project: <a href="https://github.com/patniemeyer/vgg-memoji">vgg-memoji</a>. 
+I will try to include the images that I used but if I receive complaints I may have to take them out.  If they are gone when you get there and you still want to reproduce my results with the same data please contact me directly and I will send them to you.
 
 The full VGG Face network can be downloaded from the
 <a href="http://www.robots.ox.ac.uk/~vgg/software/vgg_face/">Visual Geometry Group VGG Face</a> web site.
