@@ -1,18 +1,18 @@
 ---
-title:  "Generating Memoji From Photos"
+title:  "Attempts at Generating Memoji From Photos"
 draft: true
 ---
 
 <p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p>
 
-# Generating Memoji from Photos
+# Attempts at Generating Memoji from Photos
 
 Are you satisfied with your Memoji? :)  Did you feel a bit lost when trying to choose the right chin or eyes?  Wouldn't it be cool if an algorithm could generate a Memoji from a photo?
 
-This is my attempt at using a neural network to generate Apple Memoji characters from real world photos of people.  Specifically, I tested _VGG16 Face_, a network trained for face recognition to see how well, if at all, it would perform when comparing real world photos with Memoji that "look like" various subjects.  I then attempted to use it to guide the selection of features and create Memoji for new subjects.
+In this post I'll talk about my very basic attempt at using a neural network to generate Apple Memoji characters from real world photos of people.  Specifically, I tested _VGG16 Face_, a network trained for face recognition to see how well it would perform when comparing real world photos with Memoji that "look like" various subjects.  I then used it to guide the selection of features and create Memoji for new subjects.
 
 <p align="center">
-<img height="320" src="/assets/memoji-gen/trump-gen.png">
+<img height="320" src="/assets/memoji-gen/trump-gen4.png">
 </p>
 
 <p align="center">
@@ -21,20 +21,23 @@ This is my attempt at using a neural network to generate Apple Memoji characters
 
 
 <p align="center">
-_Memoji generated from photos with guidance from a neural network:  The first example above included one subjective choice explained below._
+_Memoji generated from photos with guidance from a neural network._
 </p>
 
 
-## Limitations
+## Spoilers
 
-Although I think the results are compelling, let me temper expectations a bit by talking about some of the limitations.  
+The images above show a couple of the results. While they leave a lot to be desired, I think there are some 
+interesting choices buried in there and I was excited to find that the simple approach taken here actually _worked
+at all_.  I half expected that the network would not "see" these Memoji as faces at all.  There are also a bunch of factors working against us here and let me state a few up front:
 
 ### Caricatures
 
-First, there is the question of what "looks like" someone in a cartoonish form.  Caricatures exaggerate a person's most distinctive features.  Some features such as hair style are not really intrinsic to the person but vary wildly from photo to photo and day to day.  For this reason it's likely that a good neural network trained to recognize individuals would capture information about hair style in an abstract way that allows for this variation and may not be ideal for generating hairstyles.
+First, there is the question of what someone "looks like" in a cartoonish form.  Caricatures exaggerate a person's most distinctive features.  But some features like hair style are not really intrinsic to the person and vary a lot from photo to photo and day to day.  For this reason it seems likely that a neural network trained to recognize individuals would capture information about hair style in an abstract way that allows for this variation.  Conversely this means that it may not be ideal for *generating* hairstyles from arbitrary choices.
 
-### Skin Tone
-Accurately inferring skin tone from photos taken in random lighting conditions is a hard.  My simple test setup did a poor job at this.  It generally produced lighter skin choices and didn't always differentiate well between realistic and unrealistic options (not shown)
+### Skin Tone and Hair Color
+Inferring skin tone from photos taken in random lighting conditions is a hard and my simple test setup reflected this by doing a very poor job at it.  In my tests the network generally picked lighter skin choices and didn't always differentiate well between realistic and unrealistic options (not shown).  Also, while the test rig did a pretty good job at differentiating dark and lighter hair it more or less failed when presented with brightly colored hair and I'll have some thoughts on this toward the end.
+
 
 <p align="center">
   <img height="350" src="/assets/memoji-gen/skin-tone.png">
@@ -42,9 +45,9 @@ Accurately inferring skin tone from photos taken in random lighting conditions i
 
 This article on normalizing facial features and skin tone looks pretty cool: <a href="https://arxiv.org/pdf/1701.04851.pdf">Synthesizing Normalized Faces from Facial Identity Features</a>
 
-### Lack of an API
-We are seriously limited by the fact that there is currently no API for creating Apple Memoji, nor any other straightforward way to automate their creation in iOS.  This drastically limits how effectively we can search the space of possible Memoji as part of any generation process.  Ideally we'd want to use a genetic algorithm to to exhaustively refine combinations of features rather than rely on their separability, but this was not possible with the simple route I chose here.
+### No API
 
+Experimenting with Memoji is limited by the fact that there is currently no API for creating them procedurally. (No straightforward way to automate their creation in iOS).  This limits how effectively we can search the space of possible Memoji as part of any generation process.  Ideally we'd want to use a genetic algorithm to to exhaustively refine combinations of features rather than rely on their separability, but this was not possible in the simple experiment here.
 
 ### Photo Selection
 
@@ -53,10 +56,10 @@ The choice of which photos to include as reference material has a large impact o
 
 ## The Network and Setup
 
-The actual code for these tests was very small because of the great tools available today.  I'll run through the setup and link to the source at the end.
+The actual code for these tests was pretty small.  I'll run through the setup and link to the source at the end.
 
 #### VGG
-VGG is a popular convolutional neural network architecture used in image recognition. <a href="http://www.robots.ox.ac.uk/~vgg/software/vgg_face/">_VGG Face_</a> is an implementation of that architecture that has been trained specifically to recognize faces. The creators of _VGG Face_ have made the fully trained network (the layer details and learned weights required to run the network) available to download and use. This is what makes goofy experiments like mine possible. Training a network like this from scratch requires a prohibitive amount of finely curated data and a lot of compute time.  The downloadable weights file representing the final trained network is half a gigabyte itself.
+VGG is a popular convolutional neural network architecture used in image recognition. <a href="http://www.robots.ox.ac.uk/~vgg/software/vgg_face/">_VGG Face_</a> is an implementation of that architecture that has been trained specifically to recognize faces. Its creators have made the fully trained network (the layer details and learned weights required to run the network) available to download and use. This is what makes goofy experiments like this possible, whereas training a network like this from scratch would require a prohibitive amount of finely curated data and a lot of compute time.  The downloadable weights file representing the final trained network is half a gigabyte!
 
 <p align="center">
   <img width="640" src="/assets/memoji-gen/vgg-face.png">
@@ -66,7 +69,7 @@ VGG is a popular convolutional neural network architecture used in image recogni
 
 #### Torch
 
-For these tests I used the <a href="http://torch.ch/">Torch</a> scientific computing framework.  Torch provides the environment needed to run the VGG model.  It offers a scripting environment based on _Lua_, with libraries for performing math on Tensors (high dimensional arrays of numbers) and primitive building blocks for the layers of the neural network. I chose Torch simply because it's one I've used before. (I'm not a big fan of Lua but it will do for this.)
+For these tests I used the <a href="http://torch.ch/">Torch</a> scientific computing framework.  Torch provides the environment needed to run the VGG model.  It offers a scripting environment based on _Lua_, with libraries for performing math on Tensors (high dimensional arrays of numbers) and primitive building blocks for the layers of the neural network. I chose Torch simply because I've used it before.
 
 Torch can load the provided VGG Face model for us and run an image through it with just a few lines of code. The basic flow is:
 
@@ -80,13 +83,14 @@ img = load_image(my_file)
 output = net:forward(img)
 ```
 
-There are a couple of steps involved in loading and preparing the image, which you can find in the supplied source code.
+There are a couple of steps involved in loading and normalizing the image, which you can find in the supplied source code.
 
-#### The Layers
+#### Working with the Layers
 
-As shown in the diagram above, VGG composes layers of different types. Starting with a Tensor holding the RGB image data, it applies a series of convolutions, poolings, weightings, and other types of transformations that change the dimensionality of the data at each layer as they learn more and more abstract features. Ultimately the network produces a one dimensional, 2622 element prediction vector from the final layer.  This vector represents the probabilities of matching each of a set of specific people in the training data set.  
+As shown in the diagram above, VGG composes layers of different types. Starting with a Tensor holding the RGB image data, it applies a series of convolutions, poolings, weightings, and other types of transformations.  The "shape" and dimensionality of the data is changed as each layer learns progressively more abstract features. 
+Ultimately the network produces a one dimensional, 2622 element prediction vector from the final layer.  This vector represents the probabilities of matching one of a set of specific people on which the network was trained.
 
-In our case we do not care about those predictions but instead we want to use the network to compare our own sets of arbitrary faces.  To do this we can utilize the output of a layer just below the prediction layer in the hierarchy.  This layer is a 4096 element vector that can be thought of as characterizing the features of a face.
+In our case we do not care about those predictions but instead we want to use the network to compare our own sets of arbitrary faces.  To do this we can utilize the output of a layer just below the prediction layer in the hierarchy.  This layer provides a 4096 element vector that characterizes the features of the face.
 
 ```Lua
 output = net.modules[selectedLayer].output:clone()
@@ -102,13 +106,13 @@ What we're going to do is essentially just run pairs of images through the netwo
 ```
 This produces a scalar value that you can think of as representing how much the vectors are "aligned" in their high dimensional space.
 
-For this test we want to compare a prospective Memoji with multiple reference images and combine the results.  To do this I normalized the value for each pair and I averaged them.
+For this test we want to compare a prospective Memoji with multiple reference images and combine the results.  To do this I just normalized the value for each pair and averaged them to produce a "score".
 
 ```lua
 sum = 0
 for i = 1, #refs do
   local ref  = refs[i]
-  local dotself = torch.dot(ref , ref) -- for normalization
+  local dotself = torch.dot(ref , ref) 
   sum = sum + torch.dot(ref, target) / dotself
 end
 ...
@@ -117,11 +121,11 @@ return sum / #refs
 
 The normalization means that the score for comparing an image to itself would yield 1.0.  So for later reference higher "score" numbers mean greater similarity.
 
-There are many other types of metrics we could use.  Two other obvious possibilities are a euclidean distance or a mean squared error measure.  I briefly experimented with both of these but for reasons that I do not understand the dot product seemed to produce the best results.  (If you try swapping those in don't forget that a distance or error measure would produce smaller values for better correspondence rather than larger as above.)
+There are many other types of metrics we could use.  Two other obvious possibilities are a euclidean distance or a mean squared error between the outputs.  I briefly experimented with both of these but for reasons that I do not understand the dot product seemed to produce better results.  
 
 ## A First Test - The Lineup
 
-The first thing I wanted to validate was whether or not the face network would work with cartoonish Memoji faces at all.  I started by grabbing a random collection of about 64 human looking Memoji from a google image search.  (Most of these came from Apple's demos).
+The first thing I wanted to validate was whether or not the face network would work with cartoonish Memoji faces at all.  I started by grabbing a random collection of 63, human-looking Memoji from a google image search.  (Most of these came from Apple's demos).
 
 <p align="center">
   <img height="350" src="/assets/memoji-gen/memoji-all.png">
@@ -146,14 +150,14 @@ Now comes the "real" test: What would the network make of a real world photo whe
   <img height="400" src="/assets/memoji-gen/obama-picks-all.png">
 </p>
 
-Ok, well, the results are interesting anyway, right? :) Keep in mind the limited set of Memoji that it had to choose among and that the dominant features the network is seeing in these images may not be what we expect. Also note how much lower the scores (the "confidences") in these comparisons than when comparing Memoji to other Memoji.  
+Ok, well, the results are interesting anyway, right? :) Keep in mind the limited set of Memoji that it had to choose among and that the dominant features the network is seeing in these images may not be what we expect. Also note how much lower the scores (the "confidences") are in these comparisons than when comparing Memoji to other Memoji.  
 
 Let's move on :)
 
 ## The "Generation" Process
 
-Ok, so now let's try to turn this around and create some Memoji using the network to pick features.
-This is where it gets sticky.  There's no API for creating Memoji with code and therefore no obvious way to have an algorithm create one.  While there would certainly be ways to do this with a jailbroken iOS device or by hacking together captured artwork, I'm going to take an easier route and just help the script push the buttons.
+Next, I tried to turn this around and create a Memoji using the network to pick features.
+This is where it got sticky.  As I mentioned, there's no obvious way to automate the creation of a Memoji on iOS.  While there would certainly be ways to do this with a jailbroken device or by hacking together captured artwork, I'm decided to keep this simple and just help the script push the buttons.
 
 For the test rig I tethered my phone to my desktop with Quicktime Player's Movie Recording feature and positioned it in a corner where the script could grab screenshots for processing.  For each feature I ran through the possibilities, selecting each option and hitting enter on the keyboard to grab and rank the output.
 
@@ -161,30 +165,32 @@ For the test rig I tethered my phone to my desktop with Quicktime Player's Movie
   <img height="300" src="/assets/memoji-gen/desktop1.png">
 </p>
 
-This is obviously not ideal for several reasons:  First, it's a pain. (There are 93 hair choices by the way; Try running through those dozens of times.)  More importantly, it only allows us to evaluate one feature difference at a time.  In theory we could iterate on this and run through the tree of choices repeatedly until there were no changes suggested by the network,  but even that isn't perfect since it might only be a "local minimum" based on how we started.  
+This is obviously not ideal for several reasons:  First, it's a pain. (There are 93 hair choices by the way; Try running through those dozens of times.)  More importantly, it only allows us to evaluate one feature difference at a time.  In theory we could iterate on this and run through the tree of choices repeatedly until there were no changes suggested by the network,  but even that isn't perfect since it might only be a "local minimum" based on how we started. (If one feature affects the perception of another feature then the order of evaluation matters).
 
 Did I mention that there are 93 hair choices? :)
 
-Also my initial attempt at doing this was frustrated by the fact that small head and eye movements would affect the scoring. Only after a lot of wasted time did I realize that I could just cover the camera and the Memomji would rever to a fixed position, yet still allow me to make the changes to its appearance :)
+My initial attempt at doing all of this was also frustrated by the fact that the head was tracking me and small movements would affect the scoring. After some wasted time I realized that I could simply cover the camera and the Memomji would stay in a fixed position :facepalm:.
 
-
-Let's go with this and see what happens.
 
 ## Results
 
-I spoiled most of the results with the images at the beginning of this article, but they could use a little elaboration.
+I spoiled some of the results at the beginning of this post, but they could use a little elaboration.
 
 <p align="center">
-<img height="160" src="/assets/memoji-gen/trump-gen.png">
+<img height="160" src="/assets/memoji-gen/trump-gen4.png">
 </p>
 
 <p align="center">
 <img height="168" src="/assets/memoji-gen/obama-gen.png">
 </p>
 
-First, let me say that I only made one subjective pick (tweak) in two Presidential examples and that was to override President Trump's hair.  So with that exception, to the extent that you think the generated examples do or do not look like their counterparts that is all due to the network's rankings.
+In a draft of this article I showed an image of President Trump in which I overrode the decision of the network about the choice of hair and picked one of the higher ranked ones myself (I did say "guided") but I thought better of that and in all of the images shown here are the choices of the script.  
 
-I've already mentioned that skin tone was not differentiated very well at all, although in the Memoji selection test it did seem to make some correspondence?
+With that said, some feature choices seemed much more volatile than others: By this I mean that in some cases the top three choices made by the network were very similar but sometimes they were not.  For example, these are the top four choices for President Trump's hair:
+
+<p align="center">
+<img height="168" src="/assets/memoji-gen/trump-hair-choices.png">
+</p>
 
 Some characteristics did what I expected.  For example, President Obama is known to have somewhat prominent ears and the network did rank the choices from largest to smallest.
 
@@ -193,23 +199,14 @@ Some characteristics did what I expected.  For example, President Obama is known
   <br/><em>Obama's ear selection</em>
 </p>
 
-But the choice of eyes seems more random.  By this I mean that the top three choices, while plausible, did not seem paticularly similar to one another.
+But the choice of eyes varied quite a bit:
 
 <p align="center">
   <img height="200" src="/assets/memoji-gen/obama-eyes.png">
   <br/><em>Obama's eye selection</em>
 </p>
 
-President Trump's hair selection varied wildly.
-
-<p align="center">
-  <img height="200" src="/assets/memoji-gen/trump-hair.png">
-  <br/><em>Trump's hair selection</em>
-</p>
-
-And so for the purposes of the banner shot for the article I took the liberty of changing the hair.  (Note that the choices below don't reflect the final eye color, but the network did later choose blue).
-
-President Trump's eye selection on the other hand was more consistent:
+President Trump's eye selection was more consistent:
 
 <p align="center">
   <img height="200" src="/assets/memoji-gen/trump-eyes.png">
@@ -218,12 +215,30 @@ President Trump's eye selection on the other hand was more consistent:
 
 President Obama's chin looks overly square to my eye, but after staring at it for a while now it kind of looks right to me.   (This is the danger of letting too much subjectivity creep into this.)
 
-Finally, I should also note that I did not bother with facial hair selection for either President since they have none.  (I probably should have.)
+### Hair Color
+
+I've already mentioned that skin tone was not differentiated very well at all. (Although in the Memoji selection test it did seem to make some correspondence?)
+
+Hair color selection was also problematic.  Hair color for President Trump and President Obama seemed fine but when I tried it on someone with bright read hair the network always wanted to pick gray:
+
+<p align="center">
+  <img height="200" src="/assets/memoji-gen/carrottop-haircolor.png">
+  <br/><em>Carrot Top hair color selection</em>
+</p>
+
+Reddish hair was in the top three of ten, but this was not a satisfying result.  I tried many things to see if I could find factors that would affect this:  I changed the way I pre-processed the image (thinking that perhaps I had the layers reversed or the normalization wrong).  But I found that the choice of gray here was very stable even when I changed the input image drastically.  
+
+In a more promising test I looked at the choices that *other layers* would make. Recall that we chose layer 38 since it was the highest layer before the part of the network that would try to guess at individual people from the training set. However I spent a lot of time earlier comparing the choices of some of the lower layers, just to see how they would differ.  In particular using our layer 32 instead of 38 often seemed to make a different and interesting choice where color was concerned.  This layer corresponds to the last "pooling" layer in VGG16 right before the first "fully connected" layer and so perhaps it retains more spatial and color information.  This layer and some lower layers did a better job at picking bright red for the color of Carrot Top's hair.  However they made subjectively worse choices for the rest of the images.
+
+I also tried averaging hair color choices in various ways (by top three choices and by alternate network layers).  
+The averaging actually sort of works for features too if you don't mind a little blurring.  These produced plausible results but ultimately nothing gave me bright red hair for Carrot Top :(
+
+If anyone has any ideas here please write me!
 
 ## The Source
 
 You can get the Torch scripts that I used in this article at the github project: <a href="">memoji-face</a>. 
-I probably won't include the images with the scripts just to avoid complaints, but if anyone wants to reproduce my results with the same data please contact me directly and I will send them to you.
+I probably won't include the images with the scripts to avoid complaints, but if anyone wants to reproduce my results with the same data please contact me directly and I will send them to you.
 
 The full VGG Face network can be downloaded from the
 <a href="http://www.robots.ox.ac.uk/~vgg/software/vgg_face/">Visual Geometry Group VGG Face</a> web site.
@@ -238,6 +253,7 @@ Pat Niemeyer is a co-founder and software engineer at Present Company.  He is th
   <img height="320" src="/assets/memoji-gen/pat-gen.png">
 </p>
 
-For my Memoji above I made a few tweaks as well: The network chose black hair for me instead of brown with some gray, gray eyes for some reason, and a slightly different set of facial hair (though very close).
+For my Memoji above I allowed myself a few tweaks: The network chose black hair for me, which I changed to brown with gray highlights. It also chose gray eyes for some reason and a slightly different set of facial hair (though very close).
 
 {% include nav.html %}
+
