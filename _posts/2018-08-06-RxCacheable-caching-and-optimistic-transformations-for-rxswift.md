@@ -1,9 +1,8 @@
 ---
 title:  "RxCacheable: Caching and Optimisitic Transformations for RxSwift"
-draft: true
 ---
 
-<p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p>
+<!--p style="font-size: 200%; font-weight: bold; color: red">DRAFT</p-->
 
 # RxCacheable: Caching and Optimisitic Transformations for RxSwift
 
