@@ -244,6 +244,9 @@ The full VGG Face network can be downloaded from the
 
 All feedback, corrections, and suggestions are welcome.
 
+**UPDATE:** Since writing this article I have switched decisively to <a href="https://pytorch.org/">PyTorch</a>, 
+a Python based environment with Torch integration. It's stable / mature now and I find it much more pleasant to work in than Lua.  (Go <a href="https://www.jetbrains.com/pycharm/">Intellij PyCharm!</a>)
+
 ## Me?
 
 Pat Niemeyer is a Co-founder and software engineer at <a href="https://present.co">Present Company</a>.  He is the author of the Learning Java book series by O'Reilly & Associates and contributor to various open source projects.
